@@ -21,7 +21,19 @@ public:
     myString& operator = (char* B);
 };
 myString::myString() {
+    strArray = NULL;
+    size = 0;
+}
+myString::myString(char* inpStr) {
+    size = sizeof(inpStr);
+    strArray = new char[size];
+    for(int i = 0; i < sizeof(size); ++i) strArray[i] = inpStr[i];
+}
+myString::myString(myString& B) {
 
+}
+int myString::Size(){
+    return size;
 }
 class bagOfWords {
 private:
