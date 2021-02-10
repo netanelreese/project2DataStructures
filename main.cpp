@@ -35,12 +35,13 @@ myString::myString(myString& B) { //copy constructor
     strArray = new char[size]; //creating an array with size equal to the input
     for (int i = 0; i < B.Size(); ++i) strArray[i] = B.getString()[i]; //deep copying the strArray to this strArray
 }
-int myString::Size(){
+int myString::Size(){ //returning the size of this object
     return this->size;
 }
-char* myString::getString() {
+char* myString::getString() { //returns the string array of this object
     return this->strArray;
 }
+
 class bagOfWords {
 private:
     int binarySearchAndInsert (myString& W);
