@@ -41,6 +41,21 @@ int myString::Size(){ //returning the size of this object
 char* myString::getString() { //returns the string array of this object
     return this->strArray;
 }
+bool myString::operator==(myString& B) {
+
+}
+bool myString::operator>(myString& B) {
+
+}
+bool myString::operator<(myString& B) {
+
+}
+myString& myString::operator=(myString& B) {
+
+}
+myString& myString::operator=(char* B) {
+
+}
 
 class bagOfWords {
 private:
