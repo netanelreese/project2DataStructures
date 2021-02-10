@@ -10,9 +10,9 @@ protected:
     int size;
     void strCpy (char* A, char* B, int n);
 public:
-    myString ();
+    myString();
     myString(char* inpStr);
-    myString (myString& B);
+    myString(myString& B);
     int Size();
     bool operator == (myString& B);
     bool operator > (myString& B);
