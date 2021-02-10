@@ -19,21 +19,27 @@ public:
     bool operator < (myString& B);
     myString& operator = (myString& B);
     myString& operator = (char* B);
+    char* getString();
 };
-myString::myString() {
-    strArray = NULL;
-    size = 0;
+myString::myString() { //default constructor
+    strArray = NULL; //making the strArray array null
+    size = 0; //setting size equal to zero
 }
-myString::myString(char* inpStr) {
-    size = sizeof(inpStr);
-    strArray = new char[size];
-    for(int i = 0; i < sizeof(size); ++i) strArray[i] = inpStr[i];
+myString::myString(char* inpStr) { //non default constructor
+    size = sizeof(inpStr); //setting the size equal to the size of the input array
+    strArray = new char[size]; //creating instance of the strArray variable
+    for(int i = 0; i < sizeof(size); ++i) strArray[i] = inpStr[i]; //copying over the elements to strArray
 }
-myString::myString(myString& B) {
-
+myString::myString(myString& B) { //copy constructor
+    size = B.Size(); //setting this objects size equal to the input object's size
+    strArray = new char[size]; //creating an array with size equal to the input
+    for (int i = 0; i < B.Size(); ++i) strArray[i] = B.getString()[i]; //deep copying the strArray to this strArray
 }
 int myString::Size(){
-    return size;
+    return this->size;
+}
+char* myString::getString() {
+    return this->strArray;
 }
 class bagOfWords {
 private:
