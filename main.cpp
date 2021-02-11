@@ -42,7 +42,16 @@ char* myString::getString() { //returns the string array of this object
     return this->strArray;
 }
 bool myString::operator==(myString& B) {
-
+    bool same = false;
+    for (int i = 0; i < Size(); ++i) {
+        if (B.getString()[i] == getString()[i]) {
+            same = true;
+        }
+        else {
+            same = false;
+        }
+    }
+    return same;
 }
 bool myString::operator>(myString& B) {
 
