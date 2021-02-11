@@ -54,7 +54,24 @@ bool myString::operator==(myString& B) {
     return same;
 }
 bool myString::operator>(myString& B) {
-
+    bool greaterThan = false;
+    if (Size() == B.Size()) {
+        for(int i = 0; i < Size(); ++i) {
+            if (getString()[i] > B.getString()[i]) {
+                greaterThan = true;
+            }
+            else {
+                greaterThan = false;
+            }
+        }
+    }
+    else if(Size() > B.Size()){
+        greaterThan = true;
+    }
+    else {
+        greaterThan = false;
+    }
+    return greaterThan;
 }
 bool myString::operator<(myString& B) {
 
