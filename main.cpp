@@ -92,7 +92,7 @@ int myString::Size () {
 // overloading = operator - initialize object with an existing string
 myString& myString::operator = (char* B) {
     myString output; //initializing a new myString object
-    output.strArray = new char[sizeof(B)]; //initializing the strArray member of the output obkect
+    output.strArray = new char[stringLength(B)]; //initializing the strArray member of the output obkect
     for (int i = 0; i < stringLength(B); ++i) { //copying the input char array over
         output.strArray[i] = B[i];
     }
