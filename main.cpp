@@ -23,6 +23,8 @@ int stringLength (char* A) {
     return size; //size is the last index position
 }
 
+
+
 class myString;
 
 class myString {
@@ -199,7 +201,13 @@ char* getNextToken () {
     else return NULL;
 }
 
+int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
+    int mid = (left + (right - 1))/2;
 
+    if (arr[mid] == stringNeeded){
+        return 1;
+    }
+}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class bagOfWords {
@@ -217,7 +225,6 @@ public:
     myString* get_Words();
     int* get_Freq();
     int get_size();
-
     void setSize(int i);
 
     void addWord (myString& W);//insert word w into the array _words - keep it sorted alphabetically
@@ -295,16 +302,14 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords)
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
-
-    // TODO
-
-    return NULL;
+    return binarySearch(get_Words(), 0, get_size(), wordToFind);
 }
 
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    // TODO
+    _size++;
+
 }
 
 
