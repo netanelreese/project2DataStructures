@@ -91,10 +91,14 @@ int myString::Size () {
 
 // overloading = operator - initialize object with an existing string
 myString& myString::operator = (char* B) {
+    myString output;
+    output.strArray = new char[sizeof(B)];
+    for (int i = 0; i < stringLength(B); ++i) {
+        output.strArray[i] = B[i];
+    }
+    output.size = stringLength(B);
 
-    // TODO
-
-    return NULL;
+    return output;
 }
 
 // overloading = operator - initialize object with an existing mystring object
