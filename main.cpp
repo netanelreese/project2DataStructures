@@ -280,7 +280,7 @@ void bagOfWords::setSize(int i)
 void bagOfWords::display()
 {
     for (int i = 0; i < _size; ++i) {
-        cout << _words[i] << ": " << _frequencies << endl;
+        cout << _words[i] << ": " << _frequencies[i] << endl;
     }
 }
 
