@@ -293,11 +293,13 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
+    //sorts the bagOfWords alphabetically using insertion sort
     int i, j;
     myString key;
     for (int i = 1; i < _size; ++i) {
         key = _words[i];
         j = i - 1;
+        //move words that are "greater" than the key to one position ahead
         while (j >= 0 && _words[j] > key) {
             _words[j + 1] = _words[j];
             j--;
