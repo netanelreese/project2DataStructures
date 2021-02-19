@@ -32,7 +32,6 @@ class myString {
 protected:
     char* strArray;
     int size;
-    void strCpy (char* A, char* B, int n);
 public:
     myString ();
     myString(char* inpStr);
@@ -44,6 +43,7 @@ public:
     bool operator < (myString& B);
     myString& operator = (myString& B);
     myString& operator = (char* B);
+    ~myString();
 };
 
 // outputs a given string A
@@ -174,6 +174,11 @@ bool myString::operator>(myString& B) {
     }
     return greaterThan;
 }
+myString::~myString() {
+    delete [] strArray;
+    size = 0;
+    cout << "myString object destroyed." << endl;
+}
 
 // get one token from redirected input and return that string (alphanumeric)
 char* getNextToken () {
@@ -274,9 +279,9 @@ void bagOfWords::setSize(int i)
 // print the bag of words in dictionary format
 void bagOfWords::display()
 {
-
-    // TODO
-
+    for (int i = 0; i < _size; ++i) {
+        cout << _words[i] << ": " << _frequencies << endl;
+    }
 }
 
 // sort the _words and _frequencies based on frequencies
@@ -299,8 +304,10 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords)
     return NULL;
 }
 bagOfWords::~bagOfWords() {
-   delete _words;
-   delete _frequencies;
+   delete [] _words;
+   delete [] _frequencies;
+   _size = 0;
+   cout << "bagOfWords object destroyed." << endl;
 
 }
 // to search for a given word in _words - returns 0 if not found, 1 if found
@@ -373,10 +380,9 @@ int main () {
     cout << "newBag - Sorted based on frequency:" << endl;
     (*newBag).display ();
 
-    // TODO : destructors
-    // delete [] stopWordsList;
-    // delete myBag;
-    // delete newBag;
+    delete [] stopWordsList;
+    delete myBag;
+    delete newBag;
 
 }
 
