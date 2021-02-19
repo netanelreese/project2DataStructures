@@ -96,7 +96,7 @@ myString& myString::operator = (char* B) {
     myString output; //initializing a new myString object
     output.strArray = new char[stringLength(B)]; //initializing the strArray member of the output obkect
     for (int i = 0; i < stringLength(B); ++i) { //copying the input char array over
-        output.strArray[i] = B[i];
+        output.getWord()[i] = B[i];
     }
     output.size = stringLength(B); //setting the size of this object
 
@@ -108,7 +108,7 @@ myString& myString::operator = (myString& B) {
     myString output; //initializing a new myString object
     output.strArray = new char[B.Size()]; //initializing the strArray member of the output object with size of B's string
     for (int i = 0; i < B.Size(); ++i) { //copying the input char array over
-        output.strArray[i] = B.getWord()[i];
+        output.getWord()[i] = B.getWord()[i];
     }
     output.size = B.Size(); //setting the size of this object
 
@@ -280,7 +280,7 @@ void bagOfWords::setSize(int i)
 void bagOfWords::display()
 {
     for (int i = 0; i < _size; ++i) {
-        cout << _words[i] << ": " << _frequencies[i] << endl;
+        cout << get_Words()[i] << ": " << get_Words()[i] << endl;
     }
 }
 
