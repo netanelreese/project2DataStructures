@@ -293,7 +293,17 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
-    // TODO
+    int i, j;
+    myString key;
+    for (int i = 1; i < _size; ++i) {
+        key = _words[i];
+        j = i - 1;
+        while (j >= 0 && _words[j] > key) {
+            _words[j + 1] = _words[j];
+            j--;
+        }
+        _words[j+1] = key;
+    }
 }
 
 bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords)
