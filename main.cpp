@@ -113,8 +113,6 @@ myString& myString::operator = (myString& B) {
     output.size = B.Size(); //setting the size of this object
 
     return output; //returning the output object
-
-    return output;
 }
 
 // checking if two myString objects are the same - return true or false
@@ -175,9 +173,9 @@ bool myString::operator>(myString& B) {
     return greaterThan;
 }
 myString::~myString() {
-    delete [] strArray;
-    size = 0;
-    cout << "myString object destroyed." << endl;
+    delete [] strArray; //deleting the array
+    size = 0; //setting the size to 0
+    cout << "myString object destroyed." << endl; //confirmation that object is destroyed
 }
 
 // get one token from redirected input and return that string (alphanumeric)
@@ -231,7 +229,6 @@ public:
     int* get_Freq();
     int get_size();
     void setSize(int i);
-
     void addWord (myString& W);//insert word w into the array _words - keep it sorted alphabetically
     void sortFreq(); //sort words array based on frequency
     void sortWords(); //sort words array alphabetically
@@ -280,7 +277,7 @@ void bagOfWords::setSize(int i)
 void bagOfWords::display()
 {
     for (int i = 0; i < _size; ++i) {
-        cout << get_Words()[i] << ": " << get_Words()[i] << endl;
+        cout << get_Words()[i] << ": " << get_Words()[i] << endl; //displays each word and their frequency
     }
 }
 
