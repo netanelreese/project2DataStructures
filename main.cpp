@@ -298,7 +298,11 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords)
 
     return NULL;
 }
+bagOfWords::~bagOfWords() {
+   delete _words;
+   delete _frequencies;
 
+}
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
