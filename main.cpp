@@ -358,6 +358,8 @@ int main () {
     //Now read a text and put them in the bagOfWords instance.
     bagOfWords* myBag = new bagOfWords ();
 
+    token = getNextToken (); // v2: this was the error.
+
     while (token != NULL)
     {
         tokenString = new myString (token); //create a myString object with the token
@@ -391,6 +393,7 @@ int main () {
     cout << endl;
     cout << "newBag - Sorted based on frequency:" << endl;
     (*newBag).display ();
+
 
     delete [] stopWordsList;
     delete myBag;
