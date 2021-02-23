@@ -302,7 +302,7 @@ void bagOfWords::display()
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    bubbleSort(_frequencies, get_size()/2);
+    bubbleSort(_frequencies, _words, get_size()/2);
 }
 
 // sort the _words and _frequencies, alphabetically
