@@ -211,6 +211,11 @@ int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
         return 1;
     }
 }
+void swapElements(int first, int second) {
+    int temp = first;
+    first = second;
+    second = temp;
+}
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class bagOfWords {
