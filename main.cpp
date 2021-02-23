@@ -211,10 +211,23 @@ int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
         return 1;
     }
 }
-void swapElements(int first, int second) {
-    int temp = first;
+template <class Object> //function template for swap method, todo: rename template
+void swapElements(Object first, Object second) {
+    Object temp = first;
     first = second;
     second = temp;
+}
+void bubbleSort(int* freq, myString* word, int n) {
+    int i, j;
+    for (i = 0; i < n-1; ++i) {
+        for (j = 0; j < n-i-1; j++) {
+            if (freq[j] < freq[j+1]) {
+                swapElements(&freq[j], &freq[j+1]);
+                swapElements(&word[j], &word[j+1]);
+            }
+        }
+    }
+
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -289,7 +302,7 @@ void bagOfWords::display()
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    // TODO
+    bubbleSort(_frequencies, get_size()/2);
 }
 
 // sort the _words and _frequencies, alphabetically
