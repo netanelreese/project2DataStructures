@@ -295,14 +295,14 @@ void bagOfWords::setSize(int i)
 void bagOfWords::display()
 {
     for (int i = 0; i < _size; ++i) {
-        cout << get_Words()[i] << ": " << get_Words()[i] << endl; //displays each word and their frequency
+        cout << get_Words()[i] << ": " << get_Freq()[i] << endl; //displays each word and their frequency
     }
 }
 
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    bubbleSort(_frequencies, _words, get_size()/2);
+    bubbleSort(_frequencies, _words, get_size()/2); //calling the bubble sort on both the frequency array and the words array
 }
 
 // sort the _words and _frequencies, alphabetically
