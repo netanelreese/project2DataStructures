@@ -118,12 +118,17 @@ myString& myString::operator = (myString& B) {
 // checking if two myString objects are the same - return true or false
 bool myString::operator==(myString& B) {
     bool same = false;
-    for (int i = 0; i < Size(); ++i) {
-        if (B.getWord()[i] == getWord()[i]) {
-            same = true;
-        }
-        else {
-            same = false;
+    if (Size() != B.Size()) {
+        same = false;
+    }
+    else {
+        for (int i = 0; i < Size(); ++i) {
+            if (B.getWord()[i] == getWord()[i]) {
+                same = true;
+            }
+            else {
+                same = false;
+            }
         }
     }
     return same;
