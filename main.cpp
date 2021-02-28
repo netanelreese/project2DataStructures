@@ -354,8 +354,14 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    _size++;
+    _size++; //incrementing the size to account for one more word
+    myString* newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
+    for (int i = 0; i < sizeof(_words); ++i) {
+        newArr[i] = _words[i]; //deep copying the arrays
+    }
+    newArr[get_size() - 1] = newWord; //adding the new word to the end of the array
 
+    _words = newArr; //setting the _words array equal to the new array
 }
 
 
