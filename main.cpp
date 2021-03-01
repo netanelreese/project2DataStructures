@@ -116,21 +116,17 @@ myString& myString::operator = (myString& B) {
 
 // checking if two myString objects are the same - return true or false
 bool myString::operator==(myString& B) {
-    bool equals = false;
     if (this->Size() != B.Size()) {
-        equals = false; //if the sizes do not equal eachother automatically return false
+        return false; //if the sizes do not equal eachother automatically return false
     }
     else {
         for (int i = 0; i < Size(); ++i) {
-            if (B.getWord()[i] == this->getWord()[i]) {
-                equals = true;
-            }
-            else {
-                equals = false;
+            if (B.getWord()[i] != this->getWord()[i]) {
+                return false;
             }
         }
     }
-    return equals;
+    return true;
 }
 
 // comparison of myString A if less than myString B - return true or false
@@ -209,12 +205,12 @@ char* getNextToken () {
 }
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-    if (left <= right) {
-        int mid = (right - left) / 2;
+    if (left < right) {
+        int mid = (right + left) / 2;
 
         if (arr[mid] == stringNeeded) return mid; //if the element needed is at the middle return the middle
-        if (arr[mid] > stringNeeded) return binarySearch(arr, 1, mid - 1, stringNeeded); //split the array from the middle leftwards
-        else return binarySearch(arr, mid + 1, right, stringNeeded); //split the array from the middle rightwards
+        if (arr[mid] < stringNeeded) return binarySearch(arr, mid+1, right, stringNeeded); //split the array from the middle leftwards
+        else return binarySearch(arr, left, mid-1, stringNeeded); //split the array from the middle rightwards
     }
     return -1; //if the element isnt found return -1
 }
@@ -343,6 +339,7 @@ void bagOfWords::sortWords()
 
 bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
     // TODO
+    int numWordsRemoved = 0;
     bagOfWords* newBag = new bagOfWords(_size);
     int inArr;
     int j = 0;
@@ -353,6 +350,7 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
             if (stopWords[i] == get_Words()[j]) {
                 _words[i] = "";
                 _frequencies[i] = 0;
+                numWordsRemoved++;
             }
             ++j;
             inArr = binarySearch(_words, 0, _size, stopWords[i]);
@@ -397,6 +395,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
+    //if(binarySearch(_words, 0, _size, newWord) != -1) {
         _size++;//incrementing the size to account for one more word
         myString *newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
         for (int i = 0; i < _size - 1; ++i) {
@@ -405,7 +404,11 @@ void bagOfWords::addWord(myString & newWord)
         newArr[get_size() - 1] = newWord;
         _words = newArr;
         sortWords();
+        _frequencies[binarySearch(_words, 0, _size, newWord)]++;
+    //}
+    //else {
         //_frequencies[binarySearch(_words, 0, _size, newWord)]++;
+    //}
 }
 
 
