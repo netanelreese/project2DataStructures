@@ -391,7 +391,7 @@ void bagOfWords::addWord(myString & newWord)
 {
     _size++; //incrementing the size to account for one more word
     myString* newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
-    for (int i = 0; i < sizeof(_words); ++i) {
+    for (int i = 0; i < _size - 1; ++i) {
         newArr[i] = _words[i]; //deep copying the arrays
     }
     newArr[get_size() - 1] = newWord; //adding the new word to the end of the array
