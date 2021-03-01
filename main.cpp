@@ -374,8 +374,16 @@ bagOfWords::~bagOfWords() {
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
     int index = binarySearch(_words, 0, _size, wordToFind);
-    if(index != -1) {
-        
+    if(index == -1) {
+        int i = _size-1;
+        while(wordToFind < _words[i] && i >= 0) {
+            _words[i+1] = _words[i];
+            --i;
+        }
+        _words[i+1] = wordToFind;
+        _frequencies[i+1] = 1;
+        _size++;
+
         return 0;
     }
     else {
@@ -388,6 +396,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 void bagOfWords::addWord(myString & newWord)
 {
     binarySearchAndInsert(newWord);
+    sortWords();
 }
 
 
