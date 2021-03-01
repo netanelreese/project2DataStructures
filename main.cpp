@@ -209,24 +209,14 @@ char* getNextToken () {
 }
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-    int mid;
-    int result;
-    myString midString;
-    if (left < right) {
-        mid = (left + right) / 2;
-        midString = arr[mid];
-        if (stringNeeded == midString) {return mid+1;}
-        else if (midString < stringNeeded) {
-            return binarySearch(arr, mid + 1, right, stringNeeded);
-        }
-        else return binarySearch(arr, left, mid, stringNeeded);
+    if (right >= 1) {
+        int mid = 1 + (right - left) / 2;
 
+        if (arr[mid] == stringNeeded) return mid; //if the element needed is at the middle return the middle
+        if (arr[mid] > stringNeeded) return binarySearch(arr, 1, mid - 1, stringNeeded); //split the array from the middle leftwards
+        else return binarySearch(arr, mid + 1, right, stringNeeded); //split the array from the middle rightwards
     }
-    else {
-        if ((left == right) && (arr[left] < stringNeeded)) {result = left + 1;}
-        else result = left;
-    }
-    return result;
+    else return -1; //if the element isnt found return -1
 }
 template <class Object> //function template for swap method, todo: rename template
 void swapElements(Object first, Object second) {
@@ -286,6 +276,11 @@ bagOfWords::bagOfWords (int numOfWords)
     _size = numOfWords;
     _words = new myString[numOfWords];
     _frequencies = new int[numOfWords];
+
+    for(int i = 0; i < _size; ++i) {
+        _words[i] = "";
+        _frequencies[i] = 0;
+    }
 }
 bagOfWords::bagOfWords(bagOfWords &bag) {
     _size = bag.get_size();
@@ -382,22 +377,25 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
+    if(binarySearch(_words, 0, _size, wordToFind) != -1) {
+        _size++;//incrementing the size to account for one more word
+        myString* newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
+        for(int i = 0; i < _size - 1; ++i) {
+            newArr[i] = _words[i];
+        }
+        newArr[get_size() - 1] = wordToFind;
+        _words = newArr;
+        sortWords();
+    }
+    else {
 
-    return binarySearch(get_Words(), 0, get_size(), wordToFind);
+    }
 }
 
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    _size++; //incrementing the size to account for one more word
-    myString* newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
-    for (int i = 0; i < _size - 1; ++i) {
-        newArr[i] = _words[i]; //deep copying the arrays
-    }
-    newArr[get_size() - 1] = newWord; //adding the new word to the end of the array
-
-    _words = newArr; //setting the _words array equal to the new array
-    sortWords();
+    binarySearchAndInsert(newWord);
 }
 
 
