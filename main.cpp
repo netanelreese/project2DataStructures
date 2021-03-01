@@ -116,21 +116,19 @@ myString& myString::operator = (myString& B) {
 
 // checking if two myString objects are the same - return true or false
 bool myString::operator==(myString& B) {
-    bool same = false;
-    if (Size() != B.Size()) {
-        same = false;
+    if (this->Size() != B.Size()) {
+        return false;
     }
     else {
         for (int i = 0; i < Size(); ++i) {
-            if (B.getWord()[i] == getWord()[i]) {
-                same = true;
+            if (B.getWord()[i] == this->getWord()[i]) {
+                return true;
             }
             else {
-                same = false;
+                return false;
             }
         }
     }
-    return same;
 }
 
 // comparison of myString A if less than myString B - return true or false
@@ -377,7 +375,8 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
-    if(binarySearch(_words, 0, _size, wordToFind) != -1) {
+    int index = binarySearch(_words, 0, _size, wordToFind);
+    if(index != -1) {
         _size++;//incrementing the size to account for one more word
         myString* newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
         for(int i = 0; i < _size - 1; ++i) {
@@ -386,16 +385,32 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
         newArr[get_size() - 1] = wordToFind;
         _words = newArr;
         sortWords();
+
+        return 1;
     }
     else {
-
+        _frequencies[index]++;
+        return 0;
     }
 }
 
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    binarySearchAndInsert(newWord);
+    if (binarySearch(_words, 0, _size, newWord) == -1) {
+        _size++;//incrementing the size to account for one more word
+        myString *newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
+        for (int i = 0; i < _size - 1; ++i) {
+            newArr[i] = _words[i];
+        }
+        newArr[get_size() - 1] = newWord;
+        _words = newArr;
+        sortWords();
+        _frequencies[binarySearch(_words, 0, _size, newWord)]++;
+    }
+    else {
+        _frequencies[binarySearch(_words, 0, _size, newWord)]++;
+    }
 }
 
 
