@@ -105,11 +105,11 @@ myString& myString::operator = (char* B) {
 
 // overloading = operator - initialize object with an existing mystring object
 myString& myString::operator = (myString& B) {
-    strArray = new char[B.Size()]; //initializing the strArray member of the output object with size of B's string
+    strArray = new char[B.size]; //initializing the strArray member of the output object with size of B's string
+    size = B.Size();
     for (int i = 0; i < B.Size(); ++i) { //copying the input char array over
         strArray[i] = B.getWord()[i];
     }
-    size = B.Size(); //setting the size of this object
 
     return *this; //returning the output object
 }
@@ -131,46 +131,44 @@ bool myString::operator==(myString& B) {
 
 // comparison of myString A if less than myString B - return true or false
 bool myString::operator<(myString& B) {
-    bool lessThan = false;
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i] < B.getWord()[i]) {
                 return true;
             }
-            else {
-                lessThan = false;
+            else if(getWord()[i] > B.getWord()[i]) {
+                return false;
             }
         }
+        return false;
     }
     else if (Size() < B.Size()) {
-        lessThan = true;
+        return true;
     }
     else {
-        lessThan = false;
+        return false;
     }
-    return lessThan;
 }
 
 // comparison of myString A if greater than myString B - return true or false
 bool myString::operator>(myString& B) {
-    bool greaterThan = false;
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i] > B.getWord()[i]) {
                 return true;
             }
-            else {
-                greaterThan = false;
+            else if (getWord()[i] < B.getWord()[i]){
+                return false;
             }
         }
+        return false;
     }
     else if (Size() > B.Size()) {
-        greaterThan = true;
+        return true;
     }
     else {
-        greaterThan = false;
+        return false;
     }
-    return greaterThan;
 }
 myString::~myString() {
     delete [] strArray; //deleting the array
@@ -323,19 +321,22 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
-    int i, index, j;
+    int i, index, j, freqOfWord;
     myString stringToFind;
 
     for(int i = 1; i < _size; ++i) {
         j = i - 1;
         stringToFind = _words[i];
+        freqOfWord = _frequencies[i];
         index = binarySearch(_words, 0, _size, stringToFind);
 
         while(j >= index) {
             _words[j+1] = _words[j];
+            _frequencies[j+1] = _frequencies[j];
             j--;
         }
         _words[j+1] = stringToFind;
+        _frequencies[j+1] = freqOfWord;
     }
 }
 
@@ -376,12 +377,13 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
     int index = binarySearch(_words, 0, _size, wordToFind);
     if(index == -1) {
         int i = _size-1;
-        while(wordToFind < _words[i] && i >= 0) {
+        while(_words[i] < wordToFind && i >= 0) {
             _words[i+1] = _words[i];
+            _frequencies[i+1] = _frequencies[i];
             --i;
         }
         _words[i+1] = wordToFind;
-
+        _frequencies[i+1] = 1;
         _size++;
 
         return 0;
