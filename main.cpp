@@ -135,7 +135,7 @@ bool myString::operator<(myString& B) {
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i] < B.getWord()[i]) {
-                lessThan = true;
+                return true;
             }
             else {
                 lessThan = false;
@@ -157,7 +157,7 @@ bool myString::operator>(myString& B) {
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i] > B.getWord()[i]) {
-                greaterThan = true;
+                return true;
             }
             else {
                 greaterThan = false;
@@ -323,7 +323,7 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
-    int i, index, j, k;
+    int i, index, j;
     myString stringToFind;
 
     for(int i = 1; i < _size; ++i) {
