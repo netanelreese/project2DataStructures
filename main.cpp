@@ -180,7 +180,7 @@ bool myString::operator>(myString& B) {
 myString::~myString() {
     delete [] strArray; //deleting the array
     size = 0; //setting the size to 0
-    cout << "myString object destroyed." << endl; //confirmation that object is destroyed
+    //cout << "myString object destroyed." << endl; //confirmation that object is destroyed
 }
 
 // get one token from redirected input and return that string (alphanumeric)
@@ -260,7 +260,7 @@ protected:
 public:
     bagOfWords ();
     bagOfWords (int numOfWords);
-
+    bagOfWords(bagOfWords &bag); //copy constructor
     myString* get_Words();
     int* get_Freq();
     int get_size();
@@ -288,7 +288,14 @@ bagOfWords::bagOfWords (int numOfWords)
     _words = new myString[numOfWords];
     _frequencies = new int[numOfWords];
 }
+bagOfWords::bagOfWords(bagOfWords &bag) {
+    _size = bag.get_size();
+    _words = new myString[_size];
+    _frequencies = new int[_size];
 
+    for(int i = 0; i < _size; ++i)_words[i] = bag.get_Words()[i];
+    for(int j = 0; j < _size; ++j)_frequencies[j] = bag.get_Freq()[j];
+}
 myString* bagOfWords::get_Words()
 {
     return _words;
@@ -344,12 +351,27 @@ void bagOfWords::sortWords()
     }
 }
 
-bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords)
-{
-
+bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
     // TODO
+    bagOfWords* newBag = new bagOfWords(_size - numStopWords);
+    int inArr;
+    int j = 0;
 
-    return NULL;
+    for(int i = 0; i < numStopWords; ++i){
+        inArr = binarySearch(_words, 0, _size, stopWords[i]);
+        while(inArr != 0 && j < _size) {
+            if (stopWords[i] == get_Words()[j]) {
+                stopWords[i] = "";
+            }
+            ++j;
+            inArr = binarySearch(_words, 0, _size, stopWords[i]);
+        }
+        j = 0;
+    }
+    sortWords();
+    for (int i = 0; i < sizeof(arrNoStopWords); ++i)arrNoStopWords[i] = _words[i];
+
+    return newBag;
 }
 bagOfWords::~bagOfWords() {
    delete [] _words;
