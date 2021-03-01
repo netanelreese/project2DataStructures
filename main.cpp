@@ -55,8 +55,8 @@ ostream& operator << (ostream& s, myString& A) {
 // default constructor - initializes with a NULL as the first character
 myString::myString () {
     size = 0;
-    strArray = new char[1];
-    strArray[0] = '\0';
+    strArray = new char[0];
+    strArray[0] = ' ';
 }
 
 // non default constructor - initialize object with an existing string
@@ -76,7 +76,7 @@ myString::myString (myString& B) {
     delete [] strArray;
     strArray = NULL;
     size = B.size;
-    strArray = new char[size];
+    strArray = new char[size+1];
     emptyString(strArray, size+1);
     stringCopy (B.strArray, size, strArray);
 }
@@ -93,23 +93,25 @@ int myString::Size () {
 
 // overloading = operator - initialize object with an existing string
 myString& myString::operator = (char* B) {
-    strArray = new char[stringLength(B)]; //initializing the strArray member of the output obkect
-    for (int i = 0; i < stringLength(B); ++i) { //copying the input char array over
+    size = stringLength(B);
+    strArray = new char[size];
+    for(int i = 0; i < size; i++) {
         strArray[i] = B[i];
     }
-
-    size = stringLength(B);
-
     return *this; //returning the output object
 }
 
 // overloading = operator - initialize object with an existing mystring object
 myString& myString::operator = (myString& B) {
-    strArray = new char[B.size]; //initializing the strArray member of the output object with size of B's string
-    size = B.Size();
-    for (int i = 0; i < B.Size(); ++i) { //copying the input char array over
-        strArray[i] = B.getWord()[i];
+    if(this == &B) {
+        return *this;
     }
+    delete [] strArray;
+    strArray = NULL;
+    size = B.size;
+    strArray = new char[size + 1];
+    emptyString(strArray, size + 1);
+    stringCopy(B.strArray, size, strArray);
 
     return *this; //returning the output object
 }
@@ -136,14 +138,23 @@ bool myString::operator<(myString& B) {
             if (getWord()[i] < B.getWord()[i]) {
                 return true;
             }
-            else if(getWord()[i] > B.getWord()[i]) {
-                return false;
-            }
         }
         return false;
     }
-    else if (Size() < B.Size()) {
-        return true;
+    else if (Size() < B.Size() || Size() > B.Size()) {
+        int smaller;
+        if (Size() < B.Size()) {
+            smaller = Size();
+        }
+        else {
+            smaller = B.Size();
+        }
+        for (int i = 0; i < smaller; ++i) {
+            if(getWord()[i] < B.getWord()[i]) {
+                return true;
+            }
+        }
+        return false;
     }
     else {
         return false;
@@ -157,17 +168,29 @@ bool myString::operator>(myString& B) {
             if (getWord()[i] > B.getWord()[i]) {
                 return true;
             }
-            else if (getWord()[i] < B.getWord()[i]){
+            else if(getWord()[i] < B.getWord()[i]) {
                 return false;
             }
         }
         return false;
     }
-    else if (Size() > B.Size()) {
-        return true;
+    else if (Size() < B.Size() || Size() > B.Size()) {
+        int smaller;
+        if (Size() < B.Size()) {
+            smaller = Size();
+        }
+        else {
+            smaller = B.Size();
+        }
+        for (int i = 0; i < smaller; ++i) {
+            if(getWord()[i] > B.getWord()[i]) {
+                return true;
+            }
+        }
+        return false;
     }
     else {
-        return false;
+        return true;
     }
 }
 myString::~myString() {
@@ -374,23 +397,43 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
-    int index = binarySearch(_words, 0, _size, wordToFind);
-    if(index == -1) {
-        int i = _size-1;
-        while(_words[i] < wordToFind && i >= 0) {
-            _words[i+1] = _words[i];
-            _frequencies[i+1] = _frequencies[i];
-            --i;
-        }
-        _words[i+1] = wordToFind;
-        _frequencies[i+1] = 1;
+    if(_size == 0) {
+        delete [] _words;
+        delete [] _frequencies;
         _size++;
-
+        _words = new myString[_size];
+        _frequencies = new int[_size];
+        _words[0] = " ";
+        _words[0] = wordToFind;
+        _frequencies[0] = 1;
         return 0;
     }
-    else {
-        _frequencies[index]++;
-        return 1;
+    else{
+        int index = binarySearch(_words, 0, _size, wordToFind);
+        if (index == -1) {
+            myString* newWords = new myString[_size + 1];
+            for(int i = 0; i < _size; ++i) {
+                newWords[i] = " ";
+                newWords[i] = _words[i];
+            }
+            newWords[_size] = " ";
+            _words = newWords;
+            int i = _size - 1;
+            while (_words[i] > wordToFind && i >= 0) {
+                //cout << _words[i+1] << " " << _words[i] << endl;
+                _words[i + 1] = _words[i];
+                _frequencies[i + 1] = _frequencies[i];
+                --i;
+            }
+            _words[i + 1] = wordToFind;
+            _frequencies[i + 1] = 1;
+            _size++;
+
+            return 0;
+        } else {
+            _frequencies[index]++;
+            return 1;
+        }
     }
 }
 
