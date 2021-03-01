@@ -134,7 +134,9 @@ bool myString::operator==(myString& B) {
 // comparison of myString A if less than myString B - return true or false
 bool myString::operator<(myString& B) {
 
-    for(int i = 0; i < this->Size(); ++i) if(getWord()[i] == B.getWord()[i])return false;
+    if (getWord() == NULL) return true;
+
+    for(int i = 0; i < Size(); ++i) if(getWord()[i] == B.getWord()[i])return false;
 
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
@@ -241,35 +243,47 @@ char* getNextToken () {
 }
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-        if (left <= right) {
-            int mid = (left + right)/2;
-            if (arr[mid] == stringNeeded)
-                return mid ;
-            if (arr[mid] > stringNeeded)
-                return binarySearch(arr, left, mid-1, stringNeeded);
-            if (arr[mid] > stringNeeded)
-                return binarySearch(arr, mid+1, right, stringNeeded);
+    int middle;
+    if(right >= left)
+    {
+        middle = (left + right)/2;
+        //Checking if the element is present at middle loc
+        if(arr[middle] == stringNeeded){
+            return middle + 1;
         }
-        return -1;
+
+            //Checking if the search element is present in greater half
+        else if(arr[middle] < stringNeeded){
+            return binarySearch(arr,middle+1,right,stringNeeded);
+        }
+
+            //Checking if the search element is present in lower half
+        else{
+            return binarySearch(arr,left,middle-1,stringNeeded);
+        }
     }
-template <class Object> //function template for swap method, todo: rename template
-void swapElements(Object first, Object second) {
-    Object temp = first;
-    first = second;
-    second = temp;
-}
-void bubbleSort(int* freq, myString* word, int n) {
-    int i, j;
-    for (i = 0; i < n-1; ++i) {
-        for (j = 0; j < n-i-1; j++) {
-            if (freq[j] < freq[j+1]) {
-                swapElements(&freq[j], &freq[j+1]);
-                swapElements(&word[j], &word[j+1]);
-            }
-        }
+    return -1;
     }
 
-}
+
+void sort(int* freq, myString* words, int n) {
+        int i, j, key;
+        myString wordKey;
+        for (i = 1; i < n; i++){
+            key = freq[i];
+            wordKey = words[i];
+            j = i - 1;
+
+            while (j >= 0 && freq[j] > key)
+            {
+                freq[j + 1] = freq[j];
+                words[j + 1] = words[j];
+                j = j - 1;
+            }
+            freq[j + 1] = key;
+            words[j + 1] = wordKey;
+        }
+    }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class bagOfWords {
@@ -347,6 +361,7 @@ void bagOfWords::setSize(int i)
 // print the bag of words in dictionary format
 void bagOfWords::display()
 {
+    cout << "Bag of Words: " << get_size() << endl; //giving a title to the bag of words with size
     for (int i = 0; i < _size; ++i) {
         cout << get_Words()[i] << ": " << get_Freq()[i] << endl; //displays each word and their frequency
     }
@@ -355,32 +370,27 @@ void bagOfWords::display()
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    bubbleSort(_frequencies, _words, get_size()/2); //calling the bubble sort on both the frequency array and the words array
+    sort(_frequencies, _words, _size); //calling the bubble sort on both the frequency array and the words array
 }
 
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
-    if(_size == 1) {
-        return;
-    }
-    int i, index, j, freqOfWord;
-    myString stringToFind;
-    stringToFind = " ";
-
-    for(int i = 1; i < _size; ++i) {
+    int i, j, key;
+    myString wordKey;
+    for (i = 1; i < _size; i++){
+        key = _frequencies[i];
+        wordKey = _words[i];
         j = i - 1;
-        stringToFind = _words[i];
-        freqOfWord = _frequencies[i];
-        index = binarySearch(_words, 0, _size, stringToFind);
 
-        while(j >= index) {
-            _words[j+1] = _words[j];
-            _frequencies[j+1] = _frequencies[j];
-            j--;
+        while (j >= 0 && _words[j] > wordKey)
+        {
+            _frequencies[j + 1] = _frequencies[j];
+            _words[j + 1] = _words[j];
+            j = j - 1;
         }
-        _words[j+1] = stringToFind;
-        _frequencies[j+1] = freqOfWord;
+        _frequencies[j + 1] = key;
+        _words[j + 1] = wordKey;
     }
 }
 
