@@ -323,17 +323,19 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
-    int i, j;
-    myString insertElement;
+    int i, index, j, k;
+    myString stringToFind;
 
     for(int i = 1; i < _size; ++i) {
-        insertElement = _words[i];
         j = i - 1;
-        while ((j >=0) && (insertElement < _words[j])) {
+        stringToFind = _words[i];
+        index = binarySearch(_words, 0, _size, stringToFind);
+
+        while(j >= index) {
             _words[j+1] = _words[j];
             j--;
         }
-        _words[j+1] = insertElement;
+        _words[j+1] = stringToFind;
     }
 }
 
@@ -350,7 +352,6 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
             if (stopWords[i] == get_Words()[j]) {
                 _words[i] = "";
                 _frequencies[i] = 0;
-                numWordsRemoved++;
             }
             ++j;
             inArr = binarySearch(_words, 0, _size, stopWords[i]);
@@ -372,43 +373,21 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
-    sortWords();
     int index = binarySearch(_words, 0, _size, wordToFind);
     if(index != -1) {
-        _size++;//incrementing the size to account for one more word
-        myString* newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
-        for(int i = 0; i < _size - 1; ++i) {
-            newArr[i] = _words[i];
-        }
-        newArr[get_size() - 1] = wordToFind;
-        _words = newArr;
-        sortWords();
-
-        return 1;
+        
+        return 0;
     }
     else {
         _frequencies[index]++;
-        return 0;
+        return 1;
     }
 }
 
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    //if(binarySearch(_words, 0, _size, newWord) != -1) {
-        _size++;//incrementing the size to account for one more word
-        myString *newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
-        for (int i = 0; i < _size - 1; ++i) {
-            newArr[i] = _words[i];
-        }
-        newArr[get_size() - 1] = newWord;
-        _words = newArr;
-        sortWords();
-        _frequencies[binarySearch(_words, 0, _size, newWord)]++;
-    //}
-    //else {
-        //_frequencies[binarySearch(_words, 0, _size, newWord)]++;
-    //}
+    binarySearchAndInsert(newWord);
 }
 
 
