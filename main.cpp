@@ -381,7 +381,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
             --i;
         }
         _words[i+1] = wordToFind;
-        _frequencies[i+1] = 1;
+
         _size++;
 
         return 0;
@@ -396,7 +396,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 void bagOfWords::addWord(myString & newWord)
 {
     binarySearchAndInsert(newWord);
-    sortWords();
+    //sortWords();
 }
 
 
