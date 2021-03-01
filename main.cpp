@@ -210,11 +210,24 @@ char* getNextToken () {
 }
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-    int mid = (left + (right - 1))/2;
+    int mid;
+    int result;
+    myString midString;
+    if (left < right) {
+        mid = (left + right) / 2;
+        midString = arr[mid];
+        if (stringNeeded == midString) {return mid+1;}
+        else if (midString < stringNeeded) {
+            return binarySearch(arr, mid + 1, right, stringNeeded);
+        }
+        else return binarySearch(arr, left, mid, stringNeeded);
 
-    if (arr[mid] == stringNeeded){
-        return 1;
     }
+    else {
+        if ((left == right) && (arr[left] < stringNeeded)) {result = left + 1;}
+        else result = left;
+    }
+    return result;
 }
 template <class Object> //function template for swap method, todo: rename template
 void swapElements(Object first, Object second) {
@@ -348,6 +361,7 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
+
     return binarySearch(get_Words(), 0, get_size(), wordToFind);
 }
 
@@ -362,6 +376,7 @@ void bagOfWords::addWord(myString & newWord)
     newArr[get_size() - 1] = newWord; //adding the new word to the end of the array
 
     _words = newArr; //setting the _words array equal to the new array
+    sortWords();
 }
 
 
