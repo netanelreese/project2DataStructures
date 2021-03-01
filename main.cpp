@@ -133,11 +133,6 @@ bool myString::operator==(myString& B) {
 
 // comparison of myString A if less than myString B - return true or false
 bool myString::operator<(myString& B) {
-
-    if (getWord() == NULL) return true;
-
-    for(int i = 0; i < Size(); ++i) if(getWord()[i] == B.getWord()[i])return false;
-
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i]<B.getWord()[i]) {
