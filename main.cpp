@@ -116,19 +116,21 @@ myString& myString::operator = (myString& B) {
 
 // checking if two myString objects are the same - return true or false
 bool myString::operator==(myString& B) {
+    bool equals = false;
     if (this->Size() != B.Size()) {
-        return false;
+        equals = false; //if the sizes do not equal eachother automatically return false
     }
     else {
         for (int i = 0; i < Size(); ++i) {
             if (B.getWord()[i] == this->getWord()[i]) {
-                return true;
+                equals = true;
             }
             else {
-                return false;
+                equals = false;
             }
         }
     }
+    return equals;
 }
 
 // comparison of myString A if less than myString B - return true or false
@@ -207,14 +209,14 @@ char* getNextToken () {
 }
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-    if (right >= 1) {
-        int mid = 1 + (right - left) / 2;
+    if (left <= right) {
+        int mid = (right - left) / 2;
 
         if (arr[mid] == stringNeeded) return mid; //if the element needed is at the middle return the middle
         if (arr[mid] > stringNeeded) return binarySearch(arr, 1, mid - 1, stringNeeded); //split the array from the middle leftwards
         else return binarySearch(arr, mid + 1, right, stringNeeded); //split the array from the middle rightwards
     }
-    else return -1; //if the element isnt found return -1
+    return -1; //if the element isnt found return -1
 }
 template <class Object> //function template for swap method, todo: rename template
 void swapElements(Object first, Object second) {
@@ -325,35 +327,32 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
-    //sorts the bagOfWords alphabetically using insertion sort
-    int i, j, keyFreq;
-    myString keyWord;
-    for (int i = 1; i < get_size(); ++i) {
-        keyWord = get_Words()[i];
-        keyFreq = get_Freq()[i];
+    int i, j;
+    myString insertElement;
+
+    for(int i = 1; i < _size; ++i) {
+        insertElement = _words[i];
         j = i - 1;
-        //move words that are "greater" than the key to one position ahead
-        while (j >= 0 && get_Words()[j] > keyWord) {
-            get_Words()[j + 1] = get_Words()[j];
-            get_Freq()[j+1] = get_Freq()[j];
+        while ((j >=0) && (insertElement < _words[j])) {
+            _words[j+1] = _words[j];
             j--;
         }
-        get_Words()[j+1] = keyWord;
-        get_Freq()[j+1] = keyFreq;
+        _words[j+1] = insertElement;
     }
 }
 
 bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
     // TODO
-    bagOfWords* newBag = new bagOfWords(_size - numStopWords);
+    bagOfWords* newBag = new bagOfWords(_size);
     int inArr;
     int j = 0;
 
     for(int i = 0; i < numStopWords; ++i){
         inArr = binarySearch(_words, 0, _size, stopWords[i]);
-        while(inArr != 0 && j < _size) {
+        while(inArr != -1 && j < _size) {
             if (stopWords[i] == get_Words()[j]) {
-                stopWords[i] = "";
+                _words[i] = "";
+                _frequencies[i] = 0;
             }
             ++j;
             inArr = binarySearch(_words, 0, _size, stopWords[i]);
@@ -375,6 +374,7 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
+    sortWords();
     int index = binarySearch(_words, 0, _size, wordToFind);
     if(index != -1) {
         _size++;//incrementing the size to account for one more word
@@ -397,7 +397,6 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    if (binarySearch(_words, 0, _size, newWord) == -1) {
         _size++;//incrementing the size to account for one more word
         myString *newArr = new myString[get_size()]; //creating new word with one more size than the _words arr
         for (int i = 0; i < _size - 1; ++i) {
@@ -406,11 +405,7 @@ void bagOfWords::addWord(myString & newWord)
         newArr[get_size() - 1] = newWord;
         _words = newArr;
         sortWords();
-        _frequencies[binarySearch(_words, 0, _size, newWord)]++;
-    }
-    else {
-        _frequencies[binarySearch(_words, 0, _size, newWord)]++;
-    }
+        //_frequencies[binarySearch(_words, 0, _size, newWord)]++;
 }
 
 
