@@ -133,13 +133,21 @@ bool myString::operator==(myString& B) {
 
 // comparison of myString A if less than myString B - return true or false
 bool myString::operator<(myString& B) {
+
+    for(int i = 0; i < this->Size(); ++i) if(getWord()[i] == B.getWord()[i])return false;
+
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
-            if (getWord()[i] < B.getWord()[i]) {
+            if (getWord()[i]<B.getWord()[i]) {
                 return true;
             }
+            else if(getWord()[i] > B.getWord()[i]) {
+                return false;
+            }
+            else {
+                return false;
+            }
         }
-        return false;
     }
     else if (Size() < B.Size() || Size() > B.Size()) {
         int smaller;
@@ -153,6 +161,10 @@ bool myString::operator<(myString& B) {
             if(getWord()[i] < B.getWord()[i]) {
                 return true;
             }
+            else if(getWord()[i] > B.getWord()[i]) {
+                return false;
+            }
+            else return (Size() < B.Size());
         }
         return false;
     }
@@ -171,8 +183,8 @@ bool myString::operator>(myString& B) {
             else if(getWord()[i] < B.getWord()[i]) {
                 return false;
             }
+            else return false;
         }
-        return false;
     }
     else if (Size() < B.Size() || Size() > B.Size()) {
         int smaller;
@@ -186,8 +198,11 @@ bool myString::operator>(myString& B) {
             if(getWord()[i] > B.getWord()[i]) {
                 return true;
             }
+            else if (getWord()[i] < B.getWord()[i]) {
+                return false;
+            }
+            else return (Size() > B.Size());
         }
-        return false;
     }
     else {
         return true;
@@ -226,15 +241,17 @@ char* getNextToken () {
 }
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-    if (left < right) {
-        int mid = (right + left) / 2;
-
-        if (arr[mid] == stringNeeded) return mid; //if the element needed is at the middle return the middle
-        if (arr[mid] < stringNeeded) return binarySearch(arr, mid+1, right, stringNeeded); //split the array from the middle leftwards
-        else return binarySearch(arr, left, mid-1, stringNeeded); //split the array from the middle rightwards
+        if (left <= right) {
+            int mid = (left + right)/2;
+            if (arr[mid] == stringNeeded)
+                return mid ;
+            if (arr[mid] > stringNeeded)
+                return binarySearch(arr, left, mid-1, stringNeeded);
+            if (arr[mid] > stringNeeded)
+                return binarySearch(arr, mid+1, right, stringNeeded);
+        }
+        return -1;
     }
-    return -1; //if the element isnt found return -1
-}
 template <class Object> //function template for swap method, todo: rename template
 void swapElements(Object first, Object second) {
     Object temp = first;
@@ -344,8 +361,12 @@ void bagOfWords::sortFreq()
 // sort the _words and _frequencies, alphabetically
 void bagOfWords::sortWords()
 {
+    if(_size == 1) {
+        return;
+    }
     int i, index, j, freqOfWord;
     myString stringToFind;
+    stringToFind = " ";
 
     for(int i = 1; i < _size; ++i) {
         j = i - 1;
@@ -412,14 +433,11 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
         int index = binarySearch(_words, 0, _size, wordToFind);
         if (index == -1) {
             myString* newWords = new myString[_size + 1];
-            for(int i = 0; i < _size; ++i) {
-                newWords[i] = " ";
-                newWords[i] = _words[i];
-            }
-            newWords[_size] = " ";
+            for(int i = 0; i < _size + 1; ++i) newWords[i] = " ";
+            for(int j = 0; j < _size; ++j)newWords[j] = _words[j];
             _words = newWords;
             int i = _size - 1;
-            while (_words[i] > wordToFind && i >= 0) {
+            while (i >= 0 && _words[i] > wordToFind) {
                 //cout << _words[i+1] << " " << _words[i] << endl;
                 _words[i + 1] = _words[i];
                 _frequencies[i + 1] = _frequencies[i];
@@ -429,8 +447,10 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
             _frequencies[i + 1] = 1;
             _size++;
 
+
             return 0;
-        } else {
+        }
+        else {
             _frequencies[index]++;
             return 1;
         }
@@ -441,7 +461,6 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 void bagOfWords::addWord(myString & newWord)
 {
     binarySearchAndInsert(newWord);
-    //sortWords();
 }
 
 
