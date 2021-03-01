@@ -93,26 +93,25 @@ int myString::Size () {
 
 // overloading = operator - initialize object with an existing string
 myString& myString::operator = (char* B) {
-    myString output; //initializing a new myString object
-    output.strArray = new char[stringLength(B)]; //initializing the strArray member of the output obkect
+    strArray = new char[stringLength(B)]; //initializing the strArray member of the output obkect
     for (int i = 0; i < stringLength(B); ++i) { //copying the input char array over
-        output.getWord()[i] = B[i];
+        strArray[i] = B[i];
     }
-    output.size = stringLength(B); //setting the size of this object
 
-    return output; //returning the output object
+    size = stringLength(B);
+
+    return *this; //returning the output object
 }
 
 // overloading = operator - initialize object with an existing mystring object
 myString& myString::operator = (myString& B) {
-    myString output; //initializing a new myString object
-    output.strArray = new char[B.Size()]; //initializing the strArray member of the output object with size of B's string
+    strArray = new char[B.Size()]; //initializing the strArray member of the output object with size of B's string
     for (int i = 0; i < B.Size(); ++i) { //copying the input char array over
-        output.getWord()[i] = B.getWord()[i];
+        strArray[i] = B.getWord()[i];
     }
-    output.size = B.Size(); //setting the size of this object
+    size = B.Size(); //setting the size of this object
 
-    return output; //returning the output object
+    return *this; //returning the output object
 }
 
 // checking if two myString objects are the same - return true or false
@@ -369,7 +368,7 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
         j = 0;
     }
     sortWords();
-    for (int i = 0; i < sizeof(arrNoStopWords); ++i)arrNoStopWords[i] = _words[i];
+    for (int i = 0; i < newBag->get_size(); ++i)newBag->_words[i] = _words[i];
 
     return newBag;
 }
