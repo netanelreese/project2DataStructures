@@ -23,8 +23,6 @@ int stringLength (char* A) {
     return size; //size is the last index position
 }
 
-
-
 class myString;
 
 class myString {
@@ -33,17 +31,17 @@ protected:
     char* strArray;
     int size;
 public:
-    myString ();
-    myString(char* inpStr);
-    myString (myString& B);
-    int Size();
-    char* getWord();
-    bool operator == (myString& B);
-    bool operator > (myString& B);
-    bool operator < (myString& B);
-    myString& operator = (myString& B);
-    myString& operator = (char* B);
-    ~myString();
+    myString (); //default constructor
+    myString(char* inpStr); //copy constructor from char array
+    myString (myString& B); //copy constructor from myString object
+    int Size(); //returns the size of this string object
+    char* getWord(); //returns the strArray object
+    bool operator == (myString& B); //operator to see if two strings are equal
+    bool operator > (myString& B); //operator to see if this string is greater than the input string
+    bool operator < (myString& B); //operator to see if this string is less than the input string
+    myString& operator = (myString& B); //assignment operator from myString object
+    myString& operator = (char* B); //assignment operator from char array object
+    ~myString(); //destructor
 };
 
 // outputs a given string A
@@ -73,11 +71,11 @@ myString::myString (char* inpStr) {
 
 // non default constructor - initialize object with an existing mystring object
 myString::myString (myString& B) {
-    strArray = NULL;
-    size = B.size;
-    strArray = new char[size+1];
-    emptyString(strArray, size+1);
-    stringCopy (B.strArray, size, strArray);
+    strArray = NULL; //setting the strArray to null
+    size = B.size; //setting size equals to input object size
+    strArray = new char[size+1]; //initializing the new array object
+    emptyString(strArray, size+1); //emptying string
+    stringCopy (B.strArray, size, strArray); //copying string ovwer
 }
 
 char* myString::getWord()
@@ -87,7 +85,7 @@ char* myString::getWord()
 
 // getter for size of myString
 int myString::Size () {
-    return size;
+    return size; //returns sizze of this string object
 }
 
 // overloading = operator - initialize object with an existing string
