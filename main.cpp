@@ -71,7 +71,7 @@ myString::myString (char* inpStr) {
 
 // non default constructor - initialize object with an existing mystring object
 myString::myString (myString& B) {
-    strArray = NULL; //setting the strArray to null
+    strArray = nullptr; //setting the strArray to null
     size = B.size; //setting size equals to input object size
     strArray = new char[size+1]; //initializing the new array object
     emptyString(strArray, size+1); //emptying string
@@ -101,14 +101,14 @@ myString& myString::operator = (char* B) {
 // overloading = operator - initialize object with an existing mystring object
 myString& myString::operator = (myString& B) {
     if(this == &B) {
-        return *this;
+        return *this; //if the two strings are equals to eachother dont bother with copying it over
     }
-    delete [] strArray;
-    strArray = NULL;
-    size = B.size;
-    strArray = new char[size + 1];
-    emptyString(strArray, size + 1);
-    stringCopy(B.strArray, size, strArray);
+    delete [] strArray; //delete the array if it holds anything
+    strArray = nullptr; //set the array equals to null
+    size = B.size; //set sizes equals to eachother
+    strArray = new char[size + 1]; //initializing the array to miss out on all the garbage in the string
+    emptyString(strArray, size + 1); //empty this sttring
+    stringCopy(B.strArray, size, strArray); //copy the string over
 
     return *this; //returning the output object
 }
@@ -121,11 +121,11 @@ bool myString::operator==(myString& B) {
     else {
         for (int i = 0; i < Size(); ++i) {
             if (B.getWord()[i] != this->getWord()[i]) {
-                return false;
+                return false; //if any of the characters dont equal eachother return false
             }
         }
     }
-    return true;
+    return true; //else return true
 }
 
 // comparison of myString A if less than myString B - return true or false
@@ -133,39 +133,40 @@ bool myString::operator<(myString& B) {
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i]<B.getWord()[i]) {
-                return true;
+                return true; //if any character is less than return true
             }
             else if(getWord()[i] > B.getWord()[i]) {
-                return false;
+                return false; //else return false
             }
         }
-        return false;
+        return false; //else return false
     }
-    else if (Size() < B.Size() || Size() > B.Size()) {
+    else if (Size() < B.Size() || Size() > B.Size()) { //if the sizes do not equal you wanna iterate over the smaller ones size
         int smaller;
-        if (Size() < B.Size()) {
+        if (Size() < B.Size()) { //setting smaller size equal to smaller
             smaller = Size();
         }
         else {
             smaller = B.Size();
         }
-        for (int i = 0; i < smaller; ++i) {
+        for (int i = 0; i < smaller; ++i) { //iterating over the two words
             if(getWord()[i] < B.getWord()[i]) {
-                return true;
+                return true; //if any character is less than return true
             }
             else if(getWord()[i] > B.getWord()[i]) {
-                return false;
+                return false; //else return false
             }
         }
-        return (Size() < B.Size());
+        return (Size() < B.Size()); //if all of the characters of the smaller string is equal to the first few
+        //characters of the bigger string return which one is smaller (true if this* is smaller, false if not)
     }
     else {
-        return false;
+        return false; //failsafe return false
     }
 }
 
 // comparison of myString A if greater than myString B - return true or false
-bool myString::operator>(myString& B) {
+bool myString::operator>(myString& B) { //the methodology for this operator is the same as the previous
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
             if (getWord()[i] > B.getWord()[i]) {
@@ -449,7 +450,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    binarySearchAndInsert(newWord);
+    binarySearchAndInsert(newWord); //adds a word in alphabetical order using binarysearch and insert
 }
 
 
