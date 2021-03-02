@@ -389,6 +389,7 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) {
 
     for(int i = 0; i < _size-1; ++i) {
         for(int j = 0; j < numStopWords; ++j) {
+
             if (_words[i] == stopWords[j]) {
                 found = true; //if they equal then get that outta here
             }
@@ -470,6 +471,7 @@ int main () {
     {
         token = getNextToken ();
         stopWordsList[i] = token; //calls the overloaded = operator on myString class
+        delete [] token;
     }
 
     //Now read a text and put them in the bagOfWords instance.
@@ -512,6 +514,7 @@ int main () {
     (*newBag).display ();
 
 
+    delete tokenString;
     delete [] stopWordsList;
     delete myBag;
     delete newBag;
