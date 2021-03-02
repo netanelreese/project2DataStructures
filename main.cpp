@@ -361,27 +361,26 @@ void bagOfWords::display()
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    sort(_frequencies, _words, _size - 1); //calling the bubble sort on both the frequency array and the words array
+    sort(_frequencies, _words, _size); //calling the bubble sort on both the frequency array and the words array
 }
 
 // sort the _words and _frequencies, alphabetically
-void bagOfWords::sortWords()
-{
+void bagOfWords::sortWords(){
     int i, j, key;
-    myString wordKey;
+    myString* wordKey;
     for (i = 1; i < _size; i++){
         key = _frequencies[i];
-        wordKey = _words[i];
+        wordKey = new myString(_words[i]);
         j = i - 1;
 
-        while (j >= 0 && _words[j] > wordKey)
+        while (j >= 0 && _words[j] > *wordKey)
         {
             _frequencies[j + 1] = _frequencies[j];
             _words[j + 1] = _words[j];
             j = j - 1;
         }
         _frequencies[j + 1] = key;
-        _words[j + 1] = wordKey;
+        _words[j + 1] = *wordKey;
     }
 }
 
@@ -438,7 +437,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
             for(int j = 0; j < _size; ++j)newWords[j] = _words[j];
             _words = newWords;
             int i = _size - 1;
-            while (i >= 0 && _words[i] > wordToFind) {
+            while (i >= 0 && wordToFind < _words[i]) {
                 _words[i + 1] = _words[i];
                 _frequencies[i + 1] = _frequencies[i];
                 --i;
