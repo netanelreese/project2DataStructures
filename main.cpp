@@ -388,13 +388,13 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) {
     bagOfWords* newBag = new bagOfWords();
     bool found = false;
 
-    for(int i = 0; i < _size ; ++i) {
+    for(int i = 0; i < _size-1; ++i) {
         for(int j = 0; j < numStopWords; ++j) {
             if (_words[i] == stopWords[j]) {
                 found = true;
             }
         }
-        if (!found) for(int k = 0; k < _frequencies[i]; ++i) newBag->addWord(_words[i]);
+        if (!found) for(int k = 0; k < _frequencies[i]; ++k) newBag->addWord(_words[i]);
         found = false;
     }
 
