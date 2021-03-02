@@ -432,7 +432,7 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
         return 0;
     }
     else{
-        int index = binarySearch(_words, 0, _size, wordToFind);
+        int index = binarySearch(_words, 0, _size - 1, wordToFind);
         if (index == -1) {
             myString* newWords = new myString[_size + 1];
             for(int i = 0; i < _size + 1; ++i) newWords[i] = " ";
