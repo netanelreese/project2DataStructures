@@ -242,7 +242,7 @@ int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
         middle = (left + right)/2;
         //Checking if the element is present at middle loc
         if(arr[middle] == stringNeeded){
-            return middle + 1;
+            return middle;
         }
 
             //Checking if the search element is present in greater half
