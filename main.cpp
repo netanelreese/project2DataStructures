@@ -168,33 +168,36 @@ bool myString::operator<(myString& B) {
 bool myString::operator>(myString& B) { //the methodology for this operator is the same as the previous
     if (Size() == B.Size()) {
         for (int i = 0; i < Size(); ++i) {
-            if (getWord()[i] > B.getWord()[i]) {
-                return true;
+            if (getWord()[i]<B.getWord()[i]) {
+                return false; //if any character is less than return true
             }
-            else if(getWord()[i] < B.getWord()[i]) {
-                return false;
+            else if(getWord()[i] > B.getWord()[i]) {
+                return true; //else return false
             }
-            else return false;
         }
+        return true; //else return false
     }
-    else if (Size() < B.Size() || Size() > B.Size()) {
+    else if (Size() < B.Size() || Size() > B.Size()) { //if the sizes do not equal you wanna iterate over the smaller ones size
         int smaller;
-        if (Size() < B.Size()) {
+        if (Size() < B.Size()) { //setting smaller size equal to smaller
             smaller = Size();
         }
         else {
             smaller = B.Size();
         }
-        for (int i = 0; i < smaller; ++i) {
-            if(getWord()[i] > B.getWord()[i]) {
-                return true;
+        for (int i = 0; i < smaller; ++i) { //iterating over the two words
+            if(getWord()[i] < B.getWord()[i]) {
+                return false; //if any character is less than return true
             }
-            else if (getWord()[i] < B.getWord()[i]) {
-                return false;
+            else if(getWord()[i] > B.getWord()[i]) {
+                return true; //else return false
             }
         }
-        return (Size() > B.Size());
-
+        return (Size() < B.Size()); //if all of the characters of the smaller string is equal to the first few
+        //characters of the bigger string return which one is smaller (true if this* is smaller, false if not)
+    }
+    else {
+        return true; //failsafe return false
     }
 }
 myString::~myString() {
@@ -401,6 +404,7 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
+
     if(_size == 0) { //if size = 0 then go in and initialize all the necessary fields and add the word
         delete [] _words;
         delete [] _frequencies;
@@ -439,8 +443,8 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    myString* dereferencedString = new myString(newWord); //dereferencing the newWord string for garbage collection
-    binarySearchAndInsert(*dereferencedString); //adds a word in alphabetical order using binarysearch and insert
+    //myString* dereferencedString = new myString(newWord); //dereferencing the newWord string for garbage collection
+    binarySearchAndInsert(newWord); //adds a word in alphabetical order using binarysearch and insert
     //delete [] dereference;
 }
 
@@ -507,8 +511,8 @@ int main () {
 
     //delete tokenString;
     //delete stopWordsList;
-    delete myBag;
-    delete newBag;
+    //delete myBag;
+    //delete newBag;
 
 }
 
