@@ -237,8 +237,7 @@ char* getNextToken () {
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
     int middle;
-    if(left <= right)
-    {
+    if(left <= right) {
         middle = (left + right)/2;
         //Checking if the element is present at middle loc
         if(arr[middle] == stringNeeded){
@@ -441,7 +440,6 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
             _words = newWords;
             int i = _size - 1;
             while (i >= 0 && _words[i] > wordToFind) {
-                //cout << _words[i+1] << " " << _words[i] << endl;
                 _words[i + 1] = _words[i];
                 _frequencies[i + 1] = _frequencies[i];
                 --i;
