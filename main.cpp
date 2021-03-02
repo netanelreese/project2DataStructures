@@ -197,6 +197,7 @@ bool myString::operator>(myString& B) {
             }
         }
         return (Size() > B.Size());
+
     }
     else {
         return true;
@@ -236,7 +237,7 @@ char* getNextToken () {
 
 int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
     int middle;
-    if(right >= left)
+    if(left <= right)
     {
         middle = (left + right)/2;
         //Checking if the element is present at middle loc
