@@ -103,11 +103,10 @@ myString& myString::operator = (myString& B) {
     if(this == &B) {
         return *this; //if the two strings are equals to eachother dont bother with copying it over
     }
-    delete [] strArray; //delete the array if it holds anything
     strArray = nullptr; //set the array equals to null
     size = B.size; //set sizes equals to eachother
-    strArray = new char[size + 1]; //initializing the array to miss out on all the garbage in the string
-    emptyString(strArray, size + 1); //empty this sttring
+    strArray = new char[size+1]; //initializing the array to miss out on all the garbage in the string
+    emptyString(strArray, size+1); //empty this sttring
     stringCopy(B.strArray, size, strArray); //copy the string over
 
     return *this; //returning the output object
@@ -197,12 +196,9 @@ bool myString::operator>(myString& B) { //the methodology for this operator is t
         return (Size() > B.Size());
 
     }
-    else {
-        return true;
-    }
 }
 myString::~myString() {
-    delete [] strArray; //deleting the array
+    if (strArray != NULL) delete [] strArray; //deleting the array
     size = 0; //setting the size to 0
     //cout << "myString object destroyed." << endl; //confirmation that object is destroyed
 }
@@ -314,11 +310,6 @@ bagOfWords::bagOfWords (int numOfWords)
     _size = numOfWords; //setting size equal to input num
     _words = new myString[numOfWords]; //initializing both arrays
     _frequencies = new int[numOfWords];
-
-    for(int i = 0; i < _size; ++i) { //initializing each variable of both arrays
-        _words[i] = "";
-        _frequencies[i] = 0;
-    }
 }
 bagOfWords::bagOfWords(bagOfWords &bag) { //non default copy constructor
     _size = bag.get_size(); //initialize all elements of bag over
@@ -372,7 +363,7 @@ void bagOfWords::sortWords(){ //sorting words using insertion sort;
         wordKey = new myString(_words[i]);
         j = i - 1;
 
-        while (j >= 0 && _words[j] > *wordKey)
+        while (j >= 0 && *wordKey < _words[j])
         {
             _frequencies[j + 1] = _frequencies[j];
             _words[j + 1] = _words[j];
@@ -390,7 +381,7 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) {
     for(int i = 0; i < _size-1; ++i) {
         for(int j = 0; j < numStopWords; ++j) {
 
-            if (_words[i] == stopWords[j]) {
+            if (stopWords[j] == _words[i]) {
                 found = true; //if they equal then get that outta here
             }
         }
@@ -401,8 +392,8 @@ bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) {
     return newBag; //return this bag
 }
 bagOfWords::~bagOfWords() {
-   delete [] _words;
-   delete [] _frequencies;
+   if (_words != NULL) delete [] _words;
+   if (_frequencies != NULL) delete [] _frequencies;
    _size = 0;
    cout << "bagOfWords object destroyed." << endl;
 
@@ -416,7 +407,6 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
         _size++;
         _words = new myString[_size];
         _frequencies = new int[_size];
-        _words[0] = " ";
         _words[0] = wordToFind;
         _frequencies[0] = 1;
         return 0; //return zero because the word was not found
@@ -425,7 +415,6 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
         int index = binarySearch(_words, 0, _size - 1, wordToFind); //using binary search to find the element's index
         if (index == -1) { //if word is not found need to insert the word in alphabetical order
             myString* newWords = new myString[_size + 1]; //initialize a new _words var
-            for(int i = 0; i < _size + 1; ++i) newWords[i] = " ";
             for(int j = 0; j < _size; ++j)newWords[j] = _words[j]; //copy each element over
             _words = newWords; //set them equal to eachother
             int i = _size - 1; //initialize the while loop
@@ -450,7 +439,9 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 // method to add words to the bagOfWords object
 void bagOfWords::addWord(myString & newWord)
 {
-    binarySearchAndInsert(newWord); //adds a word in alphabetical order using binarysearch and insert
+    myString* dereferencedString = new myString(newWord); //dereferencing the newWord string for garbage collection
+    binarySearchAndInsert(*dereferencedString); //adds a word in alphabetical order using binarysearch and insert
+    //delete [] dereference;
 }
 
 
@@ -514,8 +505,8 @@ int main () {
     (*newBag).display ();
 
 
-    delete tokenString;
-    delete [] stopWordsList;
+    //delete tokenString;
+    //delete stopWordsList;
     delete myBag;
     delete newBag;
 
