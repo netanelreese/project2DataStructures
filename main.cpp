@@ -73,7 +73,6 @@ myString::myString (char* inpStr) {
 
 // non default constructor - initialize object with an existing mystring object
 myString::myString (myString& B) {
-    delete [] strArray;
     strArray = NULL;
     size = B.size;
     strArray = new char[size+1];
@@ -260,10 +259,10 @@ int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
 
 void sort(int* freq, myString* words, int n) {
         int i, j, key;
-        myString wordKey;
+        myString* wordKey;
         for (i = 1; i < n; i++){
             key = freq[i];
-            wordKey = words[i];
+            wordKey = new myString(words[i]);
             j = i - 1;
 
             while (j >= 0 && freq[j] > key)
@@ -273,7 +272,7 @@ void sort(int* freq, myString* words, int n) {
                 j = j - 1;
             }
             freq[j + 1] = key;
-            words[j + 1] = wordKey;
+            words[j + 1] = *wordKey;
         }
     }
 
@@ -362,7 +361,7 @@ void bagOfWords::display()
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    sort(_frequencies, _words, _size); //calling the bubble sort on both the frequency array and the words array
+    sort(_frequencies, _words, _size - 1); //calling the bubble sort on both the frequency array and the words array
 }
 
 // sort the _words and _frequencies, alphabetically
