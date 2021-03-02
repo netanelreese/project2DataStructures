@@ -233,30 +233,30 @@ char* getNextToken () {
     else return NULL;
 }
 
-int binarySearch(myString* arr, int left, int right, myString& stringNeeded) {
-    int middle;
-    if(left <= right) {
+int binarySearch(myString* arr, int left, int right, myString& stringNeeded) { //binary search algorithm
+    int middle; //making middle variable
+    if(left <= right) { //to make sure the arrayt isnt screwy
         middle = (left + right)/2;
-        //Checking if the element is present at middle loc
+        //Checking if the element is at the middle thingy
         if(arr[middle] == stringNeeded){
             return middle;
         }
 
-            //Checking if the search element is present in greater half
+            //checking if element is in right half
         else if(arr[middle] < stringNeeded){
             return binarySearch(arr,middle+1,right,stringNeeded);
         }
 
-            //Checking if the search element is present in lower half
+            //Checking string needed is in left half
         else{
             return binarySearch(arr,left,middle-1,stringNeeded);
         }
     }
-    return -1;
+    return -1; //NOT FOUND!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 0_0
     }
 
 
-void sort(int* freq, myString* words, int n) {
+void sort(int* freq, myString* words, int n) { //insertion sort of frequencies
         int i, j, key;
         myString* wordKey;
         for (i = 1; i < n; i++){
@@ -311,41 +311,41 @@ bagOfWords::bagOfWords()
 // non default constructor - initializes with a known number of words
 bagOfWords::bagOfWords (int numOfWords)
 {
-    _size = numOfWords;
-    _words = new myString[numOfWords];
+    _size = numOfWords; //setting size equal to input num
+    _words = new myString[numOfWords]; //initializing both arrays
     _frequencies = new int[numOfWords];
 
-    for(int i = 0; i < _size; ++i) {
+    for(int i = 0; i < _size; ++i) { //initializing each variable of both arrays
         _words[i] = "";
         _frequencies[i] = 0;
     }
 }
-bagOfWords::bagOfWords(bagOfWords &bag) {
-    _size = bag.get_size();
+bagOfWords::bagOfWords(bagOfWords &bag) { //non default copy constructor
+    _size = bag.get_size(); //initialize all elements of bag over
     _words = new myString[_size];
     _frequencies = new int[_size];
 
-    for(int i = 0; i < _size; ++i)_words[i] = bag.get_Words()[i];
+    for(int i = 0; i < _size; ++i)_words[i] = bag.get_Words()[i]; //copy each element of bag over
     for(int j = 0; j < _size; ++j)_frequencies[j] = bag.get_Freq()[j];
 }
 myString* bagOfWords::get_Words()
 {
-    return _words;
+    return _words; //get words arr
 }
 
 int* bagOfWords::get_Freq()
 {
-    return _frequencies;
+    return _frequencies; //get the frequencies thing
 }
 
 int bagOfWords::get_size()
 {
-    return _size;
+    return _size; //return size of bag
 }
 
 void bagOfWords::setSize(int i)
 {
-    _size = i;
+    _size = i; //setting size
 }
 
 // print the bag of words in dictionary format
@@ -360,11 +360,11 @@ void bagOfWords::display()
 // sort the _words and _frequencies based on frequencies
 void bagOfWords::sortFreq()
 {
-    sort(_frequencies, _words, _size); //calling the bubble sort on both the frequency array and the words array
+    sort(_frequencies, _words, _size); //calling the insertion sort on both the frequency array and the words array
 }
 
 // sort the _words and _frequencies, alphabetically
-void bagOfWords::sortWords(){
+void bagOfWords::sortWords(){ //sorting words using insertion sort;
     int i, j, key;
     myString* wordKey;
     for (i = 1; i < _size; i++){
@@ -383,21 +383,21 @@ void bagOfWords::sortWords(){
     }
 }
 
-bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) {
-    bagOfWords* newBag = new bagOfWords();
-    bool found = false;
+bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) { //remove all words in stopWords from this _words and put them in a new bag
+    bagOfWords* newBag = new bagOfWords(); //new gucci bag
+    bool found = false; //initializing this variable to see if the words equal eachother to prevent adding
 
     for(int i = 0; i < _size-1; ++i) {
         for(int j = 0; j < numStopWords; ++j) {
             if (_words[i] == stopWords[j]) {
-                found = true;
+                found = true; //if they equal then get that outta here
             }
         }
-        if (!found) for(int k = 0; k < _frequencies[i]; ++k) newBag->addWord(_words[i]);
-        found = false;
+        if (!found) for(int k = 0; k < _frequencies[i]; ++k) newBag->addWord(_words[i]); //if found = false add the word to the bag
+        found = false; //reset found var
     }
 
-    return newBag;
+    return newBag; //return this bag
 }
 bagOfWords::~bagOfWords() {
    delete [] _words;
@@ -409,7 +409,7 @@ bagOfWords::~bagOfWords() {
 // to search for a given word in _words - returns 0 if not found, 1 if found
 int bagOfWords::binarySearchAndInsert (myString& wordToFind)
 {
-    if(_size == 0) {
+    if(_size == 0) { //if size = 0 then go in and initialize all the necessary fields and add the word
         delete [] _words;
         delete [] _frequencies;
         _size++;
@@ -418,31 +418,30 @@ int bagOfWords::binarySearchAndInsert (myString& wordToFind)
         _words[0] = " ";
         _words[0] = wordToFind;
         _frequencies[0] = 1;
-        return 0;
+        return 0; //return zero because the word was not found
     }
     else{
-        int index = binarySearch(_words, 0, _size - 1, wordToFind);
-        if (index == -1) {
-            myString* newWords = new myString[_size + 1];
+        int index = binarySearch(_words, 0, _size - 1, wordToFind); //using binary search to find the element's index
+        if (index == -1) { //if word is not found need to insert the word in alphabetical order
+            myString* newWords = new myString[_size + 1]; //initialize a new _words var
             for(int i = 0; i < _size + 1; ++i) newWords[i] = " ";
-            for(int j = 0; j < _size; ++j)newWords[j] = _words[j];
-            _words = newWords;
-            int i = _size - 1;
+            for(int j = 0; j < _size; ++j)newWords[j] = _words[j]; //copy each element over
+            _words = newWords; //set them equal to eachother
+            int i = _size - 1; //initialize the while loop
             while (i >= 0 && wordToFind < _words[i]) {
-                _words[i + 1] = _words[i];
+                _words[i + 1] = _words[i]; //scooch each element over until the word is in the right spot
                 _frequencies[i + 1] = _frequencies[i];
                 --i;
             }
-            _words[i + 1] = wordToFind;
-            _frequencies[i + 1] = 1;
-            _size++;
+            _words[i + 1] = wordToFind; //place the element in the right spot
+            _frequencies[i + 1] = 1; //set frequency at this index equal to 1 since the word is added
+            _size++; //increment size
 
-
-            return 0;
+            return 0; //return 0 since word wasnt found
         }
         else {
-            _frequencies[index]++;
-            return 1;
+            _frequencies[index]++; //increment at this index to account for repeated word being added again
+            return 1; //return one since word was found
         }
     }
 }
