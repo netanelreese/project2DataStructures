@@ -141,10 +141,8 @@ bool myString::operator<(myString& B) {
             else if(getWord()[i] > B.getWord()[i]) {
                 return false;
             }
-            else {
-                return false;
-            }
         }
+        return false;
     }
     else if (Size() < B.Size() || Size() > B.Size()) {
         int smaller;
@@ -161,9 +159,8 @@ bool myString::operator<(myString& B) {
             else if(getWord()[i] > B.getWord()[i]) {
                 return false;
             }
-            else return (Size() < B.Size());
         }
-        return false;
+        return (Size() < B.Size());
     }
     else {
         return false;
@@ -198,8 +195,8 @@ bool myString::operator>(myString& B) {
             else if (getWord()[i] < B.getWord()[i]) {
                 return false;
             }
-            else return (Size() > B.Size());
         }
+        return (Size() > B.Size());
     }
     else {
         return true;
