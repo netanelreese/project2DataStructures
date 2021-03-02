@@ -384,27 +384,19 @@ void bagOfWords::sortWords(){
     }
 }
 
-bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords){
-    // TODO
-    int numWordsRemoved = 0;
-    bagOfWords* newBag = new bagOfWords(_size);
-    int inArr;
-    int j = 0;
+bagOfWords* bagOfWords::removeStopWords(myString* stopWords, int numStopWords) {
+    bagOfWords* newBag = new bagOfWords();
+    bool found = false;
 
-    for(int i = 0; i < numStopWords; ++i){
-        inArr = binarySearch(_words, 0, _size, stopWords[i]);
-        while(inArr != -1 && j < _size) {
-            if (stopWords[i] == get_Words()[j]) {
-                _words[i] = "";
-                _frequencies[i] = 0;
+    for(int i = 0; i < _size ; ++i) {
+        for(int j = 0; j < numStopWords; ++j) {
+            if (_words[i] == stopWords[j]) {
+                found = true;
             }
-            ++j;
-            inArr = binarySearch(_words, 0, _size, stopWords[i]);
         }
-        j = 0;
+        if (!found) for(int k = 0; k < _frequencies[i]; ++i) newBag->addWord(_words[i]);
+        found = false;
     }
-    sortWords();
-    for (int i = 0; i < newBag->get_size(); ++i)newBag->_words[i] = _words[i];
 
     return newBag;
 }
