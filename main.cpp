@@ -476,7 +476,7 @@ int main () {
 
     while (token != NULL)
     {
-        tokenString = new myString (token); //create a myString object with the token
+        tokenString = new myString(token); //create a myString object with the token
         (*myBag).addWord(*tokenString); //add token to myBag
         token = getNextToken ();
     }
@@ -509,10 +509,10 @@ int main () {
     (*newBag).display ();
 
 
-    //delete tokenString;
-    //delete stopWordsList;
-    //delete myBag;
-    //delete newBag;
+    delete tokenString;
+    delete stopWordsList;
+    delete myBag;
+    delete newBag;
 
 }
 
